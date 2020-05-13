@@ -1,0 +1,7 @@
+development:
+  adapter: 'postgresql'
+  encoding: 'unicode'
+  database: 'postgres'
+  pool: 2
+  username: 'postgres'
+  password: '676767'
