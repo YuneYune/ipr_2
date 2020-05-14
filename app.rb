@@ -4,32 +4,45 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'pg'
 require 'json'
+require_relative 'functions.rb'
 
-get '/pass/:guid' do |id|
-  'Hello asd'
-  "Hi, #{id}"
+set :bind, '0.0.0.0'
+set :port, 1488
 
-  begin
-    connection = PG.connect :dbname => 'postgres', :user => 'postgres', :password => '676767'
+class MyApp < Sinatra::Base
 
-    t_messages = connection.exec 'SELECT * FROM public."Passes";'
-
-    x = t_messages.to_a
-    x.each do |item|
-      p item.values
-    end
-
-      # PG::Result
-
-  rescue PG::Error => e
-    val_error = e.message
-
-  ensure
-    connection.close if connection
+  before do
+    content_type 'application/json'
+    headers "Content-Type" => "application/json"
   end
-end
 
-post '/pass' do
+  get '/pass/:guid' do |id|
 
+    begin
+      connection = PG.connect :dbname => 'postgres', :user => 'postgres', :password => '676767'
+
+      sql_select = connection.exec 'SELECT * FROM public."Passes";'
+
+
+      sql_select.to_a.each do |item|
+        # p '!!!!!!!!!!!!!!!' if item['GUID'] == id & is_valid?(item)
+        p @pass = item if item['GUID'] == id
+        time = Time.now
+      end
+
+      body "#{@pass.to_json}, #{Time.now}"
+
+    rescue PG::Error => e
+      val_error = e.message
+
+    ensure
+      connection&.close
+    end
+  end
+
+# post '/pass' do
+#   guid = generate_id
+#   p JSON.parse(request.body.read)
+# end
 
 end
