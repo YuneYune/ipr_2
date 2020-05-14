@@ -19,7 +19,7 @@ get '/pass/:guid' do |id|
       p item.values
     end
 
-    # PG::Result
+      # PG::Result
 
   rescue PG::Error => e
     val_error = e.message
@@ -27,4 +27,9 @@ get '/pass/:guid' do |id|
   ensure
     connection.close if connection
   end
+end
+
+post '/pass' do
+
+
 end
