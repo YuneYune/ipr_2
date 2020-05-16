@@ -39,6 +39,7 @@ get '/pass/:guid' do |id|
       end
     end
 
+    status 200
     body "#{@valid_pass.to_json}"
 
   rescue PG::Error => e
@@ -46,8 +47,12 @@ get '/pass/:guid' do |id|
   end
 end
 
-get '/pass1' do
-  [200, {'zalupa' => '1'}, "Hello from Sinatra!"]
+delete '/pass/:guid' do |id|
+  begin
+    @connection.exec("DELETE FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';")
+  rescue PG::Error => e
+    body "#{e.message}"
+  end
 end
 
 post "/post" do
