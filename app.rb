@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require 'date'
+require 'securerandom'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'pg'
 require 'json'
-require 'securerandom'
+
 # require_relative 'functions'
 
 set :bind, '0.0.0.0'
@@ -15,8 +17,7 @@ before do
   content_type 'application/json'
   headers "Content-Type" => "application/json"
   request.body.rewind
-  @request_payload = JSON.parse request.body.read if request.body.read
-  p request.body.read
+  @request_payload = request.body.read
   @connection = PG.connect :dbname => 'postgres', :user => 'postgres', :password => '676767'
 end
 
@@ -58,15 +59,16 @@ end
 
 post '/pass/' do
   status 200
-  p id = generate_id
-  x = @request_payload
-  p x.class
-
+  pass = JSON.parse @request_payload
+  id = generate_id
   begin
-    # @connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES (#{id}, 'GLAD', 'VALAKAS', 'Patronovich', 1234567890, '2020-01-01', '2020-02-01');")
+    @connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{id}', '#{pass['FirstName']}', '#{pass['LastName']}', '#{pass['Patronymic']}', #{pass['PassportNumber'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
   rescue PG::Error => e
-    body "#{e.message}"
+    p e
+    body "#{e}"
   end
+
+  body "#{id.to_json}"
 
 end
 
