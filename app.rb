@@ -14,6 +14,9 @@ set :port, 1488
 before do
   content_type 'application/json'
   headers "Content-Type" => "application/json"
+  request.body.rewind
+  @request_payload = JSON.parse request.body.read if request.body.read
+  p request.body.read
   @connection = PG.connect :dbname => 'postgres', :user => 'postgres', :password => '676767'
 end
 
@@ -38,10 +41,8 @@ get '/pass/:guid' do |id|
         end
       end
     end
-
     status 200
     body "#{@valid_pass.to_json}"
-
   rescue PG::Error => e
     e.message
   end
@@ -55,19 +56,26 @@ delete '/pass/:guid' do |id|
   end
 end
 
-post "/post" do
-  p x = request.body.read
-  [200, x, "Hello from Sinatra!"]
+post '/pass/' do
+  status 200
+  p id = generate_id
+  x = @request_payload
+  p x.class
+
+  begin
+    # @connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES (#{id}, 'GLAD', 'VALAKAS', 'Patronovich', 1234567890, '2020-01-01', '2020-02-01');")
+  rescue PG::Error => e
+    body "#{e.message}"
+  end
+
 end
 
 
 def generate_id
   hex = SecureRandom.hex.upcase
   indexes = [8, 13, 18, 23]
-  indexes.each do |index|
-    hex.insert(index, '-')
-  end
-  hex
+  indexes.each { |index| @id = hex.insert(index, '-') }
+  @id
 end
 
 def is_valid?(pass)
