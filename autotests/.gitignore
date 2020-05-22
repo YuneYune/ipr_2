@@ -1,0 +1,11 @@
+.idea
+.rspec
+spec/
+spec_helper.rb
+Gemfile.lock
+workspace.xml
+bash.exe.stackdump
+draft.feature
+draft.rb
+codeWars.rb
+sqlTEST_REQUEST.feature

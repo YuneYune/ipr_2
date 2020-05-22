@@ -1,0 +1,40 @@
+{
+   "checksum": "afd1545039f81748ee6590053366431f",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13028788410338143",
+            "guid": "a275da0b-980d-41ac-9358-bc8fb772437e",
+            "id": "5",
+            "name": "PortableApps.com",
+            "type": "url",
+            "url": "http://portableapps.com/"
+         } ],
+         "date_added": "0",
+         "date_modified": "13227550420098339",
+         "guid": "00000000-0000-4000-A000-000000000002",
+         "id": "1",
+         "name": "Панель закладок",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "0",
+         "date_modified": "0",
+         "guid": "00000000-0000-4000-A000-000000000003",
+         "id": "2",
+         "name": "Другие закладки",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13028788397005139",
+         "date_modified": "0",
+         "guid": "00000000-0000-4000-A000-000000000004",
+         "id": "4",
+         "name": "Моб. закладки",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

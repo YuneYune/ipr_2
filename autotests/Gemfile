@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gem 'activesupport'
+gem 'cucumber', '=3.1.0'
+gem 'rspec-core'
+gem 'rspec-expectations'
+
+
+# rest
+
+gem 'rest-client'
+gem 'json'
+gem 'jsonpath'
+
+
+# api
+
+gem 'pg'
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'sinatra-contrib'
+
