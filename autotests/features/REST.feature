@@ -1,7 +1,7 @@
 # encoding: utf-8
 # language: ru
 
-@sinatra
+@all
 Функционал: REST заглушки
 
   @post
