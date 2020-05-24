@@ -12,7 +12,7 @@ require 'json'
 set :bind, '0.0.0.0'
 set :port, 1488
 
-connection = PG.connect dbname: 'postgres', user: 'postgres', password: '676767'
+$connection = PG.connect dbname: 'postgres', user: 'postgres', password: '676767'
 
 before do
   content_type 'application/json'
@@ -22,13 +22,12 @@ before do
 end
 
 get '/pass/:guid' do |id|
-
+  pass = find_pass(id)
   begin
-    pass = connection.exec("SELECT \"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\" FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';").to_a
-    if pass.empty?
+    if pass == false
       halt 404, 'NOT FOUND'
     else
-      response.body = pass[0].to_json
+      response.body = pass.to_json
     end
   rescue PG::Error => e
     e.message
@@ -36,20 +35,31 @@ get '/pass/:guid' do |id|
 end
 
 get '/pass/validate/:guid' do |id|
+  pass = find_pass(id)
   begin
-    pass = connection.exec("SELECT \"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\" FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';").to_a
-    halt 410, 'GONE' if valid?(pass[0]) == false
-    status 200
+    if pass == false
+      halt 404, 'NOT FOUND'
+    elsif valid?(pass) == false
+      halt 410, 'GONE'
+    else
+      status 200
+    end
   rescue PG::Error => e
     e.message
   end
 end
 
+
 delete '/pass/:guid' do |id|
+  pass = find_pass(id)
   begin
-    connection.exec("DELETE FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';")
+    if pass == false
+      halt 404, 'NOT FOUND'
+    else
+      $connection.exec("DELETE FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';")
+    end
   rescue PG::Error => e
-    response.body = e.message.to_json
+    e.message
   end
 end
 
@@ -57,22 +67,25 @@ post '/pass/' do
   pass = JSON.parse @request_payload
   guid = SecureRandom.uuid
   begin
-    connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['first_name']}', '#{pass['last_name']}', '#{pass['patronymic']}', #{pass['passport_number'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
+    $connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['first_name']}', '#{pass['last_name']}', '#{pass['patronymic']}', #{pass['passport_number'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
   rescue PG::Error => e
-    p e
-    response.body = e
+    e.message
   end
   status 200
   response.body = {guid: guid}.to_json
 end
 
 put '/pass/' do
-  pass = JSON.parse @request_payload
+  new_pass = JSON.parse @request_payload
+  pass = find_pass(new_pass['guid'])
   begin
-    connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{pass['first_name']}', \"LastName\"='#{pass['last_name']}', \"Patronymic\"='#{pass['patronymic']}', \"PaspportNumber\"= #{pass['passport_number'].to_i}, \"DateFrom\"='#{pass['DateFrom']}', \"DateTo\"='#{pass['DateTo']}' WHERE \"GUID\" = '#{pass['guid']}';")
+    if pass == false
+      halt 404, 'NOT FOUND'
+    else
+      $connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{new_pass['first_name']}', \"LastName\"='#{new_pass['last_name']}', \"Patronymic\"='#{new_pass['patronymic']}', \"PaspportNumber\"= #{new_pass['passport_number'].to_i}, \"DateFrom\"='#{new_pass['DateFrom']}', \"DateTo\"='#{new_pass['DateTo']}' WHERE \"GUID\" = '#{new_pass['guid']}';")
+    end
   rescue PG::Error => e
-    p e
-    body "#{e}"
+    e.message
   end
   status 200
 end
@@ -91,4 +104,13 @@ def valid?(pass)
     @valid_day_before = day_now <= pass['DateTo'][8, 2].to_i
   end
   valid_year && valid_month && (@valid_day_after || @valid_day_before) == true ? true : false
+end
+
+def find_pass(guid)
+  pass = $connection.exec("SELECT \"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\" FROM public.\"Passes\" WHERE \"GUID\" = '#{guid}';").to_a
+  if pass.empty?
+    false
+  else
+    pass[0]
+  end
 end
