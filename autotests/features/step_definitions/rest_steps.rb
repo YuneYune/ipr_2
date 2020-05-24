@@ -95,18 +95,17 @@ When(/^Делаем GET запрос с id пропуска последнего
 end
 
 When(/^Убедились, что в теле ответа есть вся инфа о пропуске$/) do
-  pass = JSON.parse @last_response
   subset = ['GUID', 'FirstName', 'LastName', 'Patronymic', 'PaspportNumber', 'DateFrom', 'DateTo']
-  subset.each { |item| expect(pass.has_key? item).to be true }
+  subset.each { |item| expect(@last_pass[0].has_key?(item)).to be true }
 end
 
 When(/^Убедились, что инф. в пропуске соответствует параметрам:$/) do |table|
   variables = table.raw.flatten
   subset = [variables[3], variables[5], variables[7], variables[9], variables[11], variables[13]]
-  subset.each { |item| expect(@last_pass.has_value? item).to be true }
+  subset.each { |item| expect(@last_pass[0].has_value?(item)).to be true }
 end
 
 When(/^Убедились, что в ответе есть id пропуска$/) do
   pass = JSON.parse @last_response
-  expect(pass.has_key? 'guid').to be true
+  expect(pass.has_key?('guid')).to be true
 end
