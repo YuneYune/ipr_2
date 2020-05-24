@@ -83,10 +83,14 @@ When(/^Послали GET "(.*)" запрос$/) do |url|
   @last_response = @response
 end
 
-When(/^Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске$/) do
+When(/^Делаем GET запрос с id пропуска последнего POST запроса$/) do
   @response = send_get "http://localhost:1488/pass/#{@last_id}", {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
   log_response_params @last_response.code, @last_response.headers, @last_response.body
   @last_response = @response
+end
+
+When(/^Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске$/) do
+  step 'Делаем GET запрос с id пропуска последнего POST запроса'
   @last_pass = JSON.parse @last_response
 end
 
@@ -100,4 +104,9 @@ When(/^Убедились, что инф. в пропуске соответст
   variables = table.raw.flatten
   subset = [variables[3], variables[5], variables[7], variables[9], variables[11], variables[13]]
   subset.each { |item| expect(@last_pass.has_value? item).to be true }
+end
+
+When(/^Убедились, что в ответе есть id пропуска$/) do
+  pass = JSON.parse @last_response
+  expect(pass.has_key? 'guid').to be true
 end
