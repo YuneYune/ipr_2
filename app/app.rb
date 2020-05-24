@@ -25,8 +25,6 @@ get '/pass/:guid' do |id|
 
   begin
     pass = connection.exec("SELECT \"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\" FROM public.\"Passes\" WHERE \"GUID\" = '#{id}';").to_a
-    p pass.class
-    p pass.length
     if pass.empty?
       halt 404, 'NOT FOUND'
     else
