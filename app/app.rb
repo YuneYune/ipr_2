@@ -43,7 +43,7 @@ get '/pass/:guid' do |id|
         end
       end
     end
-    @valid_pass.to_json
+    response.body = @valid_pass.to_json
   rescue PG::Error => e
     e.message
   end
@@ -58,29 +58,28 @@ delete '/pass/:guid' do |id|
 end
 
 post '/pass/' do
-  status 200
   pass = JSON.parse @request_payload
   guid = generate_id
   begin
-    @connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['FirstName']}', '#{pass['LastName']}', '#{pass['Patronymic']}', #{pass['PassportNumber'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
+    @connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['first_name']}', '#{pass['last_name']}', '#{pass['patronymic']}', #{pass['passport_number'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
   rescue PG::Error => e
     p e
     response.body = e
   end
-  { body: guid }.to_json
+  status 200
+  response.body = { guid: guid }.to_json
 end
 
 put '/pass/' do
-  status 200
   pass = JSON.parse @request_payload
-  p pass
   begin
-    @connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{pass['FirstName']}', \"LastName\"='#{pass['LastName']}', \"Patronymic\"='#{pass['Patronymic']}', \"PaspportNumber\"= #{pass['PassportNumber'].to_i}, \"DateFrom\"='#{pass['DateFrom']}', \"DateTo\"='#{pass['DateTo']}' WHERE \"GUID\" = '#{pass['guid']}';")
+    @connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{pass['first_name']}', \"LastName\"='#{pass['last_name']}', \"Patronymic\"='#{pass['patronymic']}', \"PaspportNumber\"= #{pass['passport_number'].to_i}, \"DateFrom\"='#{pass['DateFrom']}', \"DateTo\"='#{pass['DateTo']}' WHERE \"GUID\" = '#{pass['guid']}';")
   rescue PG::Error => e
     p e
     body "#{e}"
   end
-  { body: pass }.to_json
+  status 200
+  response.body = pass.to_json
 end
 
 def generate_id
