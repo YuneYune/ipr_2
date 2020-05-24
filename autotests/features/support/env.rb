@@ -1,17 +1,12 @@
-#UI-test
-require 'selenium-webdriver'
+# UI-test
 require 'cucumber'
 require 'open-uri'
-require 'Mysql2'
 
 require 'rest-client'
 
-#base-ufr
+# base-ufr
 require 'rspec/core'
 require 'rspec/expectations'
-
-
-Selenium::WebDriver.logger.level = :error
 
 
 puts 'SYSTEM TIME = ' + Time.now.to_s

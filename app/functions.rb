@@ -12,7 +12,7 @@ class Func
     hex
   end
 
-  def is_valid?(pass)
+  def valid?(pass)
     year_now = Time.now.year.to_i
     month_now = Time.now.month.to_i
     day_now = Time.now.day.to_i

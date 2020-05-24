@@ -60,7 +60,7 @@ When(/^Убедились, что мы удалили (.*)$/) do |type|
 end
 
 
-When(/^Проверили, что http status code == (\d*)$/) do |code|
+When(/^Убедились, что http status code == (\d*)$/) do |code|
   expect(@last_response.code.to_s).to eq(code)
 end
 
@@ -72,5 +72,11 @@ When(/^Послали GET "(.*)" запрос$/) do |url|
   @response = send_get url
   log_response_params @last_response.code, @last_response.headers, @last_response.body
   @last_response = @response
+end
+
+When(/^Убедились, что в теле ответа есть вся инфа о пропуске$/) do
+  pass = JSON.parse @last_response
+  subset = ['GUID', 'FirstName', 'LastName', 'Patronymic', 'PaspportNumber', 'DateFrom', 'DateTo']
+  subset.each { |item| expect(pass.has_key? item).to be true }
 end
 

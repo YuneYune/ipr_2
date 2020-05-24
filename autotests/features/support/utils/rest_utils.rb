@@ -56,7 +56,7 @@ def log_response_params(code, headers, body)
   puts "response_head = #{headers} "
   parsed = body && body.length >= 2 && (json_string? body) ? JSON.parse(body) : {}
   puts "response_body = #{JSON.pretty_generate(JSON.parse(parsed.to_json))} "
-  puts "response_body = #{JSON.parse(parsed.to_json).to_s} "
+  # puts "response_body = #{JSON.parse(parsed.to_json).to_s} "
 end
 
 # проверяем валидность json
