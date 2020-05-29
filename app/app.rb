@@ -72,7 +72,7 @@ post '/pass/' do
     e.message
   end
   status 200
-  response.body = {guid: guid}.to_json
+  response.body = { guid: guid }.to_json
 end
 
 put '/pass/' do
@@ -91,17 +91,24 @@ put '/pass/' do
 end
 
 def valid?(pass)
+
+  pass_year_from = Time.parse(pass['DateFrom']).year.to_i
+  pass_year_to = Time.parse(pass['DateTo']).year.to_i
+  pass_month_from = Time.parse(pass['DateFrom']).month.to_i
+  pass_month_to = Time.parse(pass['DateTo']).month.to_i
+  pass_day_from = Time.parse(pass['DateFrom']).day.to_i
+  pass_day_to = Time.parse(pass['DateTo']).day.to_i
+
   year_now = Time.now.year.to_i
   month_now = Time.now.month.to_i
   day_now = Time.now.day.to_i
 
-  valid_year = year_now.between?(pass['DateFrom'][0, 4].to_i, pass['DateTo'][0, 4].to_i)
-  valid_month = month_now.between?(pass['DateFrom'][5, 2].to_i, pass['DateTo'][5, 2].to_i)
-  if month_now == pass['DateFrom'][5, 2].to_i
-    @valid_day_after = day_now >= pass['DateFrom'][8, 2].to_i
-  end
-  if month_now == pass['DateTo'][5, 2].to_i
-    @valid_day_before = day_now <= pass['DateTo'][8, 2].to_i
+  valid_year = year_now.between?(pass_year_from, pass_year_to)
+  valid_month = month_now.between?(pass_month_from, pass_month_to)
+  if month_now == pass_month_from
+    @valid_day_after = day_now >= pass_day_from
+  elsif month_now == pass_month_to
+    @valid_day_before = day_now <= pass_day_to
   end
   valid_year && valid_month && (@valid_day_after || @valid_day_before) == true ? true : false
 end
