@@ -1,4 +1,4 @@
-.idea
+.idea/
 .rspec
 spec/
 spec_helper.rb
