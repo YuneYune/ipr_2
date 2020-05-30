@@ -53,14 +53,25 @@
     * Убедились, что http status code == 200
 
   @410
-  Структура сценария: [05] Делая GET запрос с существующим id, но с просроченной датой пропуска, получаем 410 статус код
-    * Послали GET "http://localhost:1488/pass/validate/<guid>" запрос
+  Сценарий: [05] Делая GET запрос с существующим id, но с просроченной датой пропуска, получаем 410 статус код
+    * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
+    * Запомнили id пропуска
+    * Послали PUT запрос с id пропуска последнего POST запроса и параметрами:
+      | key            | value      |
+      | FirstName      | Vladimir   |
+      | LastName       | Putin      |
+      | Patronymic     | Huylo      |
+      | PaspportNumber | 1488228228 |
+      | DateFrom       | 2019-05-20 |
+      | DateTo         | 2019-06-20 |
+    * Делаем GET запрос с id пропуска последнего POST запроса
+    * Проверяем валидность пропуска, делая ГЕТ запрос с запомненным id
     * Убедились, что http status code == 410
-
-    Примеры:
-      | guid                                 |
-      | FB565247-8FCC-E248-B5F6-01F5CE351488 |
-
 
   @delete
   Сценарий: [06] Делая DELETE запрос с существующим id пропуска, пропуск удаляется из БД

@@ -75,6 +75,10 @@ When(/^Делаем GET запрос с id пропуска последнего
   @last_response = @response
 end
 
+When(/^Проверяем валидность пропуска, делая ГЕТ запрос с запомненным id$/) do
+  step "Послали GET \"http://localhost:1488/pass/validate/#{@last_id}\" запрос"
+end
+
 When(/^Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске$/) do
   step 'Делаем GET запрос с id пропуска последнего POST запроса'
   @last_pass = JSON.parse @last_response

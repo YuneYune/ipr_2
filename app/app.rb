@@ -95,7 +95,7 @@ def valid?(pass)
   pass_from = Time.parse(pass['DateFrom'])
   pass_to = Time.parse(pass['DateTo'])
 
-  Time.now > pass_from && Time.now < pass_to ? true : false
+  p Time.now > pass_from && Time.now < pass_to ? true : false
 end
 
 def find_pass(guid)
