@@ -70,9 +70,7 @@ When(/^Послали GET "(.*)" запрос$/) do |url|
 end
 
 When(/^Делаем GET запрос с id пропуска последнего POST запроса$/) do
-  @response = send_get "http://localhost:1488/pass/#{@last_id}", {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
-  log_response_params @last_response.code, @last_response.headers, @last_response.body
-  @last_response = @response
+  step "Послали GET \"http://localhost:1488/pass/#{@last_id}\" запрос"
 end
 
 When(/^Проверяем валидность пропуска, делая ГЕТ запрос с запомненным id$/) do
