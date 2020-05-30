@@ -25,10 +25,10 @@ When(/^Послали PUT запрос с id пропуска последнег
     * Послали PUT на URL `http://localhost:1488/pass/` с параметрами:
       | key             | value                      |
       | guid            | #{@last_id}                |
-      | first_name      | #{pass['first_name']}      |
-      | last_name       | #{pass['last_name']}       |
-      | patronymic      | #{pass['patronymic']}      |
-      | passport_number | #{pass['passport_number']} |
+      | FirstName      | #{pass['FirstName']}      |
+      | LastName       | #{pass['LastName']}       |
+      | Patronymic      | #{pass['Patronymic']}      |
+      | PaspportNumber | #{pass['PaspportNumber']} |
       | DateFrom        | #{pass['DateFrom']}        |
       | DateTo          | #{pass['DateTo']}          |
   }
@@ -87,10 +87,10 @@ end
 
 When(/^Убедились, что инф. в пропуске соответствует параметрам:$/) do |table|
   variables = table.raw.flatten
-  hash = Hash[*variables].reject { |k| k == 'key' }
-  subset = hash.values
+  expected_hash = Hash[*variables].reject { |k| k == 'key' }
+  keys = expected_hash.keys
   pass = JSON.parse @last_response
-  subset.each { |item| expect(pass.has_value?(item)).to be true }
+  keys.each { |key| expect(pass[key] == expected_hash[key]).to be true }
 end
 
 When(/^Убедились, что в ответе есть id пропуска$/) do

@@ -67,7 +67,7 @@ post '/pass/' do
   pass = JSON.parse @request_payload
   guid = SecureRandom.uuid
   begin
-    $connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['first_name']}', '#{pass['last_name']}', '#{pass['patronymic']}', #{pass['passport_number'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
+    $connection.exec("INSERT INTO public.\"Passes\"(\"GUID\", \"FirstName\", \"LastName\", \"Patronymic\", \"PaspportNumber\", \"DateFrom\", \"DateTo\") VALUES ('#{guid}', '#{pass['FirstName']}', '#{pass['LastName']}', '#{pass['Patronymic']}', #{pass['PaspportNumber'].to_i}, '#{Time.now.strftime('%F')}', '#{Date.today.next_month.strftime('%F')}');")
   rescue PG::Error => e
     e.message
   end
@@ -82,7 +82,7 @@ put '/pass/' do
     if pass == false
       halt 404, 'NOT FOUND'
     else
-      $connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{new_pass['first_name']}', \"LastName\"='#{new_pass['last_name']}', \"Patronymic\"='#{new_pass['patronymic']}', \"PaspportNumber\"= #{new_pass['passport_number'].to_i}, \"DateFrom\"='#{new_pass['DateFrom']}', \"DateTo\"='#{new_pass['DateTo']}' WHERE \"GUID\" = '#{new_pass['guid']}';")
+      $connection.exec("UPDATE public.\"Passes\" SET \"FirstName\"='#{new_pass['FirstName']}', \"LastName\"='#{new_pass['LastName']}', \"Patronymic\"='#{new_pass['Patronymic']}', \"PaspportNumber\"= #{new_pass['PaspportNumber'].to_i}, \"DateFrom\"='#{new_pass['DateFrom']}', \"DateTo\"='#{new_pass['DateTo']}' WHERE \"GUID\" = '#{new_pass['guid']}';")
     end
   rescue PG::Error => e
     e.message

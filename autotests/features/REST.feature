@@ -7,29 +7,29 @@
   @post
   Сценарий: [01] Делая POST запрос с данными пропуска, в ответе получаем id пропуска
     * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Убедились, что в ответе есть id пропуска
 
   @get1
   Сценарий: [02] Делая GET запрос с существующим id пропуска, получаем всю инф. о пропуске
     * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Запомнили id пропуска
     * Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске
     * Убедились, что инф. в пропуске соответствует параметрам:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
 
   @404
   Структура сценария: [03] Делая GET запрос с не существующим id пропуска, получаем 404 статус код
@@ -43,11 +43,11 @@
   @valid
   Сценарий: [04] Делая GET запрос с существующим id действующего пропуска, получаем 200 статус код
     * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Запомнили id пропуска
     * Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске
     * Убедились, что http status code == 200
@@ -61,19 +61,19 @@
   @delete
   Сценарий: [06] Делая DELETE запрос с существующим id пропуска, пропуск удаляется из БД
     * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Запомнили id пропуска
     * Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске
     * Убедились, что инф. в пропуске соответствует параметрам:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Делаем DELETE запрос с id пропуска последнего POST запроса
     * Делаем GET запрос с id пропуска последнего POST запроса
     * Убедились, что http status code == 404
@@ -82,36 +82,36 @@
   @put
   Сценарий: [06] Делая PUT запрос с существующим id пропуска, данные пропуска меняются в БД
     * Послали POST на URL "http://localhost:1488/pass/" с параметрами:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Запомнили id пропуска
     * Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске
     * Убедились, что инф. в пропуске соответствует параметрам:
-      | key             | value      |
-      | first_name      | Gussi      |
-      | last_name       | Gang       |
-      | patronymic      | Bangovich  |
-      | passport_number | 6339568555 |
+      | key            | value      |
+      | FirstName      | Gussi      |
+      | LastName       | Gang       |
+      | Patronymic     | Bangovich  |
+      | PaspportNumber | 6339568555 |
     * Послали PUT запрос с id пропуска последнего POST запроса и параметрами:
-      | key             | value      |
-      | first_name      | Vladimir   |
-      | last_name       | Putin      |
-      | patronymic      | Huylo      |
-      | passport_number | 1488228228 |
-      | DateFrom        | 2020-05-20 |
-      | DateTo          | 2020-06-20 |
+      | key            | value      |
+      | FirstName      | Vladimir   |
+      | LastName       | Putin      |
+      | Patronymic     | Huylo      |
+      | PaspportNumber | 1488228228 |
+      | DateFrom       | 2020-05-20 |
+      | DateTo         | 2020-06-20 |
     * Убедились, что http status code == 200
     * Делаем GET запрос с id пропуска последнего POST запроса и запоминаем инф. о пропуске
     * Убедились, что инф. в пропуске соответствует параметрам:
-      | key             | value      |
-      | first_name      | Vladimir   |
-      | last_name       | Putin      |
-      | patronymic      | Huylo      |
-      | passport_number | 1488228228 |
-      | DateFrom        | 2020-05-20 |
-      | DateTo          | 2020-06-20 |
+      | key            | value      |
+      | FirstName      | Vladimir   |
+      | LastName       | Putin      |
+      | Patronymic     | Huylo      |
+      | PaspportNumber | 1488228228 |
+      | DateFrom       | 2020-05-20 |
+      | DateTo         | 2020-06-20 |
 
 
